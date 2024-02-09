@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+</head>
+
+<body>
+
+    <div class="mainParent">
+
+        <%- include('../partials/ptSideBar.ejs') %>
+
+        <div class="mainContent">
+            <%- include('../partials/ptNavbar.ejs') %>
+
+            <div class="mainContentDays mt-3">
+                <div class="container">
+                    <table id="example" class="table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Surname</th>
+                                <th>Gender</th>
+                                <th>Age</th>
+                                <th>GSM</th>
+                                <th>Goal</th>
+                                <th>Beslenme</th>
+                                <th>Antrenman</th>
+                                <th>Mesaj At</th>
+                                <th>Rapor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% danisanlar.forEach(function(item) { %>
+                            <tr>
+                                <td><%=item.danisan.name%></td>
+                                <td><%=item.danisan.surname%></td>
+                                <td><%=item.danisan.gender%></td>
+                                <td><%=item.danisan.age%></td>
+                                <td><%=item.danisan.gsm%></td>
+                                <td><%=item.danisan.goal%></td>
+                                <td><a href="/pt/beslenmeGoster/<%=item.userId%>"><input type="submit"
+                                            class="btn btn-success" value="Beslenme"></a></td>
+                                <td><a href="/pt/antrenmanGoster/<%=item.userId%>"><input type="submit"
+                                            class="btn btn-success" value="Antrenman"></a></td>
+                                <td><a href="/pt/mesajlariGetir/<%=item.userId%>"><input type="submit"
+                                            class="btn btn-success" value="Mesaj At"></a></td>
+                                <td><a href="/pt/raporSayfasiGetir/<%=item.userId%>"><input type="submit"
+                                            class="btn btn-success" value="Rapor"></a></td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

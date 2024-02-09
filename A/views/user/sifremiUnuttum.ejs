@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .right {
+            width: 50%;
+            height: 100vh;
+        }
+
+        .left {
+            width: 50%;
+            height: 100vh;
+            background-color: #4724B2;
+        }
+
+        form input[type="email"],
+        form input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            margin-top: 1rem;
+            height: 2.3rem;
+        }
+
+        .kodGonder {
+            background-color: #4724B2;
+        }
+
+        .blackColor {
+            color: #313131;
+        }
+
+        .kodGir {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .7);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        .kodGirParent {
+            width: 30%;
+            height: 40vh;
+            background-color: white;
+        }
+
+        .closePopUp {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loginRegisterParent d-flex">
+        <div class="left d-flex align-items-center justify-content-center">
+            <div class="leftParent w-50">
+                <div class="text-center bg-white py-2 rounded-2">
+                    <a href="/user/login" class="text-decoration-none blackColor">Giriş Yap</a>
+                </div>
+                <div class="text-center bg-white py-2 mt-3 rounded-2">
+                    <a href="/user/register" class="text-decoration-none blackColor">Kayıt Ol</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right d-flex align-items-center justify-content-center">
+            <div class="rightParent w-50">
+                
+                <!-- <form action="/user/kodGonder" method="post"> -->
+                <h2>Şifremi Unuttum</h2>
+                <% if (flashSuccess.length > 0) { %>
+                    <div class="alert alert-success">
+                      <%= flashSuccess %>
+                    </div>
+                    <% } %>
+                    <% if (flashError.length > 0) { %>
+                    <div class="alert alert-warning">
+                      <%= flashError %>
+                    </div>
+                    <% } %>
+                <input type="text" placeholder="E-posta Adresiniz" name="email" id="email">
+                <button class="kodGonder border-0 mt-3 text-white block w-100 py-2 rounded-2" name="kodGonder">Kod
+                    Gönder</button>
+                <!-- <input type="submit" class="kodGonder border-0 mt-3 text-white block w-100 py-2 rounded-2" value="Kod Gönder"> -->
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="kodGir align-items-center justify-content-center">
+        <div class="kodGirParent position-relative d-flex align-items-center justify-content-center">
+            <span class="closePopUp">X</span>
+            <div class="w-75">
+                    <h2 class="text-center">Kodunuzu Giriniz</h2>
+                    <input type="text" name="onayKodu" id="onayKodu" placeholder="Kodunuz..">
+                    <div class="d-block border">
+
+                        <button type="button" class="border-0 mt-3 cursor-pointer kontrolEtBtn text-white text-center block d-block w-100 py-2 kodGonder rounded-2" name="kontrolEtBtn">Kod Gönder</button>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var email = "";
+        document.querySelector(".kodGonder").addEventListener("click", () => {
+
+            const email = document.getElementById("email").value;
+            const url = "http://localhost:3000/user/onayKoduGir"; 
+
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email
+                    }) 
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then(data => {
+                    console.log("İstek başarılı! Sunucudan gelen veri: ", data);
+                    if (data.data != "Mail adresine kayitli kullanici yok") {
+
+                        document.querySelector(".kontrolEtBtn").addEventListener("click", () => {
+                            const onayKodu = document.getElementById("onayKodu").value;
+                            const url = "http://localhost:3000/user/kodKontrol"; 
+
+                            fetch(url, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        email: data.mail,
+                                        onayKodu: onayKodu
+                                    }) 
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    }
+                                    throw new Error("Network response was not ok.");
+                                })
+                                .then(data => {
+                                    window.location.href = data.redirectURL;
+                                    console.log("Data : " , data);
+                                })
+                                .catch(error => {
+                                    console.error("Hata oluştu:", error);
+                                });
+                        })
+                        document.querySelector(".kodGir").style.display = "flex"
+                    }
+
+                })
+                .catch(error => {
+                    console.error("Hata oluştu:", error);
+                });
+
+        })
+
+        document.querySelector(".closePopUp").addEventListener("click", () => {
+            document.querySelector(".kodGir").style.display = "none"
+        })
+    </script>
+
+</body>
+
+</html>

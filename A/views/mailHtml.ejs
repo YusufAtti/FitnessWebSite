@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Email Template</title>
+    <style>
+        /* E-posta içeriğinin genel CSS stilleri */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff6600;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Merhaba, <%= name %> <%= surname %>!</h1>
+
+        <p>Şifre değiştirme isteğinizle ilgili olarak size özel şifre değiştirme kodunuz aşağıdadır:<p>
+
+        Şifre Değiştirme Kodu: <%=kod%>
+
+        Lütfen bu kodu şifrenizi değiştirmek için belirlenmiş alana girin. Eğer bu talebi siz yapmadıysanız veya şüpheli
+        bir aktivite olduğunu düşünüyorsanız, lütfen hemen bizimle iletişime geçin.
+
+        Not: Şifre değiştirme kodunuz sadece belirli bir süre için geçerlidir. Kodunuzun güvenliğini sağlamak için
+        başkalarıyla paylaşmaktan kaçının.
+
+        Herhangi bir sorunuz veya yardıma ihtiyacınız olursa, bize [destek@fitlab.com] adresinden ulaşabilirsiniz.
+
+        Teşekkürler,
+        Fit Lab Ekibi
+    </div>
+</body>
+
+</html>

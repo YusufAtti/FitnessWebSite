@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <style>
+
+    table{
+
+        --bs-table-bg: transparent !important;
+
+    }
+
+</style>
+</head>
+
+<body>
+
+  <div class="mainParent">
+
+    <%- include('../partials/adminSideBar.ejs') %>
+
+    <div class="mainContent">
+      <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #FF7D56;">
+        <div class="container-fluid navContainer">
+          <a class="navbar-brand" href="#">Fit Lab.</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+             
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="mainContentDays mt-3">
+        <div class="container">
+          <button type="button" class="btn btn-success float-right mb-2" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            Add User
+          </button>
+          <% if (flashSuccess.length > 0) { %>
+          <div class="alert alert-success">
+            <%= flashSuccess %>
+          </div>
+          <% } %>
+          <% if (flashError.length > 0) { %>
+          <div class="alert alert-warning">
+            <%= flashError %>
+          </div>
+          <% } %>
+
+          <div class="row justify-content-center">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Surname</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Gsm</th>
+                  <th scope="col">Goal</th>
+                  <th scope="col">Boşa Al</th>
+                  <th scope="col">Delete</th>
+                  <th scope="col">Update</th>
+                  <th scope="col">Aktif Pasif Et</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <% users.forEach(function(item) { %>
+
+                  <tr <% if (item.aktifMi === 0) { %> style = "background-color : #E6E6E6;" <% } %>>
+                  <th scope="row"><%=item.id%></th>
+                  <td><%=item.name%></td>
+                  <td><%=item.surname%></td>
+                  <td><%=item.email%></td>
+                  <td><%=item.gender%></td>
+                  <td><%=item.gsm%></td>
+                  <td><%=item.goal%></td>
+                  <td><a href="/admin/bosaAl/<%=item.id%>"><input type="submit" class="btn btn-danger"
+                    value="Boşa Al"></a></td>
+                  <td><a href="/admin/deleteUser/<%=item.id%>"><input type="submit" class="btn btn-danger"
+                        value="Delete"></a></td>
+                  <td><a href="/admin/updateUser/<%=item.id%>"><input type="submit" class="btn btn-success"
+                        value="Update"></a></td>
+                  <td><a href="/admin/aktifPasifEtUser/<%=item.id%>"><input type="submit" class="btn btn-primary"
+                        value="Aktif | Pasif"></a></td>
+                </tr>
+
+                <% }); %>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/admin/addUser" method="POST">
+            <div class="form-group ">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group ">
+              <label for="surname">Surname</label>
+              <input type="text" class="form-control" id="surname" name="surname" required>
+            </div>
+            <div class="form-group ">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group ">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group ">
+              <label for="gsm">Phone Number</label>
+              <input type="tel" class="form-control" id="gsm" name="gsm" required>
+            </div>
+            <div class="form-group ">
+              <label for="gender">Gender</label>
+              <select class="form-control" id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Erkek">Erkek</option>
+                <option value="Kadın">Kadın</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="birthday">Birthday</label>
+              <input type="date" class="form-control" id="birthday" name="birthday" required>
+            </div>
+            <div class="form-group">
+              <label for="gender">Goal</label>
+              <select class="form-control" id="goal" name="goal" required>
+                <option value="">Select Goal</option>
+                <option value="Kas Kazanmak">Kas Kazanmak</option>
+                <option value="Kilo Vermek">Kilo Vermek</option>
+                <option value="Sabit Kiloda Kalmak">Sabit Kiloda Kalmak</option>
+              </select>
+            </div>
+            <div class="form-group ">
+              <label for="image">Image</label>
+              <input class="form-control" type="file" id="picture" name="picture" accept="image/*">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add User</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>

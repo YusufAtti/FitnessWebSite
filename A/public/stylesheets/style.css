@@ -1,0 +1,85 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+.mainParent {
+    display: flex;
+}
+
+.leftSideBar {
+    width: 15%;
+    height: 100vh;
+    background-color: #4724B2;
+}
+
+.leftSideBar ul li {
+    padding: .5rem 1rem;
+    transition: .34s;
+}
+
+.leftSideBar ul li:hover {
+    background-color: rgb(64, 101, 211);
+}
+
+.leftSideBar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-left: .3rem;
+    font-size: 0.8rem;
+}
+
+.mainContent {
+    width: 85%;
+    height: 100vh;
+    overflow: auto;
+}
+
+.accordionLeft {
+    width: 10%;
+}
+
+.accordionRight {
+    width: 89%;
+}
+
+img {
+    max-width: 100%;
+}
+
+.nav-link {
+    color: white;
+    font-weight: bold;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.accordion-button {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.accordion-body {
+    border: 2px solid rgb(224, 224, 224);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgb(224, 224, 224) !important;
+}
+
+

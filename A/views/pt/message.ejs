@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        /* Genel container */
+        .container {
+            margin-top: 50px;
+        }
+
+        /* Chat container */
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        /* Chat kutusu */
+        .chat-box {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        /* Gönderilen mesaj */
+        .message-sent {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        /* Alınan mesaj */
+        .message-received {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        /* Input ve buton bölümü */
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Input alanı */
+        #messageInput {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        /* Gönder butonu */
+        .btn-primary {
+            flex: 0 0 auto;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="mainParent">
+        <%- include('../partials/ptSideBar.ejs') %>
+
+        <div class="mainContent">
+            <%- include('../partials/ptNavbar.ejs') %>
+
+            <div class="mainContentDays mt-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="chat-container">
+                                <div class="chat-box" id="chatBox">
+                                    <!-- Buraya mesajlar eklenecek -->
+                                    <% benimYolladiklarim.forEach(function(item) { %>
+                                    <% if (item.sag === 1) { %>
+                                    <div class="message-sent">
+                                        <p><%= item.message %></p>
+                                        <p class="message-time"><%= item.tarih %></p>
+                                    </div>
+                                    <% } else { %>
+                                    <div class="message-received">
+                                        <p><%= item.message %></p>
+                                        <p class="message-time"><%= item.tarih %></p>
+                                    </div>
+                                    <% } %>
+                                    <% }); %>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="messageInput"
+                                        placeholder="Mesajınızı buraya yazın...">
+                                    <button class="btn btn-primary" onclick="sendMessage()">Gönder</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+            const now = new Date(); // Anlık tarih ve saat bilgisini alır
+
+            const day = String(now.getDate()).padStart(2,
+            '0'); // Günü alır ve gerekirse 0 ile doldurur (01 ile 31 arasında)
+            const month = String(now.getMonth() + 1).padStart(2,
+                '0'); // Ayı alır ve gerekirse 0 ile doldurur (01 ile 12 arasında)
+            const year = now.getFullYear(); // Yılı alır (örneğin, 2023)
+
+            const hours = String(now.getHours()).padStart(2,
+                '0'); // Saati alır ve gerekirse 0 ile doldurur (00 ile 23 arasında)
+            const minutes = String(now.getMinutes()).padStart(2,
+                '0'); // Dakikayı alır ve gerekirse 0 ile doldurur (00 ile 59 arasında)
+            const seconds = String(now.getSeconds()).padStart(2,
+                '0'); // Saniyeyi alır ve gerekirse 0 ile doldurur (00 ile 59 arasında)
+
+            const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            const url1 = window.location.pathname;
+            const id = url1.substring(url1.lastIndexOf('/') + 1);
+            const url = "http://localhost:3000/pt/mesajGonder";
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        tarih: formattedDate,
+                        alıcıId : id
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then(data => {
+                    window.location.href = data.redirectURL;
+                    console.log("Data : ", data);
+                })
+                .catch(error => {
+                    console.error("Hata oluştu:", error);
+                });
+
+            // // Mesajları göstermek için yeni bir div oluştur
+            // const chatBox = document.getElementById('chatBox');
+            // const newMessage = document.createElement('div');
+            // newMessage.classList.add('message');
+            // newMessage.textContent = message;
+
+            // // Yeni mesajı chat penceresine ekle
+            // chatBox.appendChild(newMessage);
+
+            // // Gönderildikten sonra input alanını temizle
+            // messageInput.value = '';
+
+            // // Burada karşı taraftan gelen mesajları alabilir ve aynı şekilde ekrana ekleyebilirsiniz.
+            // // Örnek olarak:
+            // // const receivedMessage = "Karşı taraftan gelen mesaj";
+            // // const receivedMessageDiv = document.createElement('div');
+            // // receivedMessageDiv.classList.add('message');
+            // // receivedMessageDiv.textContent = receivedMessage;
+            // // chatBox.appendChild(receivedMessageDiv);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

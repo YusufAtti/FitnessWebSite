@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+</head>
+
+<body>
+
+    <div class="mainParent">
+        <%- include('../partials/ptSideBar.ejs') %>
+        <div class="mainContent">
+
+            <%- include('../partials/ptNavbar.ejs') %>
+
+            <div class="mainContentDays mt-3">
+                <div class="container">
+
+                    <div class="row">
+                        <% if (flashSuccess.length > 0) { %>
+                        <div class="alert alert-success">
+                            <%= flashSuccess %>
+                        </div>
+                        <% } %>
+                        <% if (flashError.length > 0) { %>
+                        <div class="alert alert-warning">
+                            <%= flashError %>
+                        </div>
+                        <% } %>
+
+                            <div class="form-group mb-3">
+                                <select class="form-select" aria-label="Default select example" name="userId"
+                                    id="userId">
+                                    <option selected>Danışan Seç</option>
+
+                                    <% danisanlar.forEach(function(item) { %>
+
+                                    <option value="<%=item.danisan.id%>"><%=item.danisan.name%>
+                                        <%=item.danisan.surname%></option>
+
+                                    <% }); %>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+
+                                <input type="date" class="form-control" id="tarih" name="tarih" required>
+
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <select class="form-select" aria-label="Default select example" name="ogunZamani" id="ogunZamani">
+                                    <option selected>Zaman Seç</option>
+                                    <option value="Sabah">Sabah</option>
+                                    <option value="Oglen">Öğlen</option>
+                                    <option value="Aksam">Akşam</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <% meals.forEach(function(item) { %>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<%=item.id%>" name="option" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                      <%=item.name%> Calori : <%=item.calori%>
+                                    </label>
+                                </div>
+                                <% }); %>
+                            </div>
+
+                                <div class="form-group mb-5">
+
+                                    <button type="button" class="btn btn-success" onclick="getSelectedOptions()">Öğün Ekle</button>
+
+                                </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        // Bugünün tarihini al
+        const today = new Date().toISOString().split('T')[0];
+
+        // İlgili input alanını seç
+        const dateInput = document.getElementById('tarih');
+
+        // Min değerini bugün olarak ayarla
+        dateInput.setAttribute('min', today);
+    
+        function getSelectedOptions() {
+            // let userName = document.querySelector("")
+            let checkboxes = document.getElementsByName('option')
+            let selectedOptions = []
+
+            const selectElement = document.getElementById('userId');
+            const userId = selectElement.value;
+
+            const selectElementOgun = document.getElementById('ogunZamani');
+            const ogunZamani = selectElementOgun.value;
+
+            const selectElementTarih = document.getElementById('tarih');
+            const tarih = selectElementTarih.value;
+
+
+            checkboxes.forEach(element => {
+
+                if (element.checked) {
+
+                    selectedOptions.push(element.value)
+
+                }
+
+            });
+
+
+            let userOgun = {
+                userId: userId,
+                tarih: tarih,
+                ogunAdi: ogunZamani,
+                yemekler: selectedOptions
+            }
+
+            const url = "http://localhost:3000/pt/ogunEkle";
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data : userOgun
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then(data => {
+                    window.location.href = data.redirectURL;
+                })
+                .catch(error => {
+                    console.error("Hata oluştu:", error);
+                });
+
+
+        }
+
+
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
