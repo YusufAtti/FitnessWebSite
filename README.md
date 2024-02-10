@@ -14,14 +14,18 @@ IT'S A COLLABORATIVE GROUP PROJECT. DEVELOPED WITH NODE.JS. AN UPDATE WILL BE MA
 
 
 -- Flowchart for the project:
+
 1.ATHLETE-CONSULTANT
 ![danışan diyagramı](https://github.com/YusufAtti/FitnessWebSite/assets/158186024/c1339c0d-9f43-46f2-acee-f11d0e09d610)
+
 
 2.PERSONAL TRAINER
 ![Antrenör drawio](https://github.com/YusufAtti/FitnessWebSite/assets/158186024/1ff6825d-4b65-4dfb-a425-baf7253c4ae9)
 
+
 3.ADMIN
 ![Admin drawio](https://github.com/YusufAtti/FitnessWebSite/assets/158186024/93ab3534-9d6b-4fbe-828d-b4e56b229c01)
+
 
 
 
