@@ -26,7 +26,6 @@ IT'S A COLLABORATIVE GROUP PROJECT. DEVELOPED WITH NODE.JS. AN UPDATE WILL BE MA
 
 
 
-
 --Report on the project's stages of operation:
 [Fitness Web Site.pdf](https://github.com/YusufAtti/FitnessWebSite/files/14229154/Fitness.Web.Site.pdf) 
 
