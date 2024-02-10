@@ -14,7 +14,6 @@ IT'S A COLLABORATIVE GROUP PROJECT. DEVELOPED WITH NODE.JS. AN UPDATE WILL BE MA
 
 
 -- Flowchart for the project:
-
 1.ATHLETE-CONSULTANT
 ![danışan diyagramı](https://github.com/YusufAtti/FitnessWebSite/assets/158186024/c1339c0d-9f43-46f2-acee-f11d0e09d610)
 
